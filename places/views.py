@@ -1,5 +1,9 @@
 from django.http import HttpResponse
+from django.template import loader
 
 
 def index(request):
-    return HttpResponse("<h1>Здесь будет карта</h1>")
+    template = loader.get_template('index.html')
+    context = {}
+    rendered_page = template.render(context, request)
+    return HttpResponse(rendered_page)
