@@ -6,7 +6,8 @@ class Place(models.Model):
     place_id = models.CharField(max_length=255, blank=True)
     longitude = models.FloatField(verbose_name="долгота", default=0)
     latitude = models.FloatField(verbose_name="широта", default=0)
-    details_url = models.CharField(max_length=512, blank=True)
+    description_short = models.TextField(blank=True)
+    description_long = models.TextField(blank=True)
 
     def __str__(self):
         return self.title

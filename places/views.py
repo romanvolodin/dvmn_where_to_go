@@ -1,12 +1,15 @@
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from .models import (
     Place,
+    Image,
 )
 
 
 def index(request):
+
     places = Place.objects.all()
 
     places_data = {
@@ -21,7 +24,7 @@ def index(request):
                 "properties": {
                     "title": place.title,
                     "placeId": place.place_id,
-                    "detailsUrl": place.details_url
+                    "detailsUrl": reverse('place-details', kwargs={'place_id': place.id})
                 }
             } for place in places
         ]
@@ -35,17 +38,18 @@ def index(request):
 
 def place_detail(request, place_id):
     place = get_object_or_404(Place, pk=place_id)
+    images = Image.objects.filter(place=place)
     return JsonResponse(
         {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [place.longitude, place.latitude]
-            },
-            "properties": {
-                "title": place.title,
-                "placeId": place.place_id,
-                "detailsUrl": place.details_url
+            "title": place.title,
+            "imgs": [
+                image.path.url for image in images
+            ],
+            "description_short": place.description_short,
+            "description_long": place.description_long,
+            "coordinates": {
+                "lng": place.longitude,
+                "lat": place.latitude
             }
         },
         safe=False,
