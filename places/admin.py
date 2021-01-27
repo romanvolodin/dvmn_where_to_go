@@ -5,5 +5,13 @@ from .models import (
 )
 
 
-admin.site.register(Place)
+class ImageInlineAdmin(admin.TabularInline):
+    model = Image
+
+
+class PlaceAdmin(admin.ModelAdmin):
+    model = Place
+    inlines = [ImageInlineAdmin] 
+
+admin.site.register(Place, PlaceAdmin)
 admin.site.register(Image)
