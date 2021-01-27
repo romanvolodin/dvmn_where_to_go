@@ -1,12 +1,13 @@
 from django.contrib import admin
-from django.utils.safestring import mark_safe  
+from django.utils.safestring import mark_safe
+from adminsortable2.admin import SortableInlineAdminMixin
 from .models import (
     Place,
     Image,
 )
 
 
-class ImageInlineAdmin(admin.TabularInline):
+class ImageInlineAdmin(SortableInlineAdminMixin, admin.TabularInline):
     model = Image
     fields = ("path", "get_preview", "order",)
     readonly_fields = ("get_preview",)
