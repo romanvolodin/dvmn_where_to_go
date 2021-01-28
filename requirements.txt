@@ -3,3 +3,4 @@ django-admin-sortable2==0.7.7
 django-tinymce==3.2.0
 environs==9.3.0
 pillow==8.1.0
+whitenoise==5.2.0
