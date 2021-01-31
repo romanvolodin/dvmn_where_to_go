@@ -13,6 +13,8 @@ class ImageInlineAdmin(SortableInlineAdminMixin, admin.TabularInline):
     readonly_fields = ("get_preview",)
 
     def get_preview(self, obj):
+        if not obj.image:
+            return format_html("Здесь будет превью, когда вы загрузите файл.")
         return format_html(f"<img src='{obj.image.url}' height='200'>")
 
     get_preview.short_description = "Превью" 
