@@ -43,7 +43,7 @@ def place_detail(request, place_id):
         {
             "title": place.title,
             "imgs": [
-                image.path.url for image in images
+                image.image.url for image in images
             ],
             "description_short": place.description_short,
             "description_long": place.description_long,

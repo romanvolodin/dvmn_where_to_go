@@ -9,11 +9,11 @@ from .models import (
 
 class ImageInlineAdmin(SortableInlineAdminMixin, admin.TabularInline):
     model = Image
-    fields = ("path", "get_preview", "order",)
+    fields = ("image", "get_preview", "order",)
     readonly_fields = ("get_preview",)
 
     def get_preview(self, obj):
-        return mark_safe(f"<img src='{obj.path.url}' height='200'>")
+        return mark_safe(f"<img src='{obj.image.url}' height='200'>")
 
     get_preview.short_description = "Превью" 
 

@@ -36,7 +36,7 @@ def add_image_to_place(place, image_url, upload_to):
     r = requests.get(image_url)
     with open(file_path, 'wb') as f:
         f.write(r.content)
-    image = Image(place=place, path=file_name)
+    image = Image(place=place, image=file_name)
     image.save()
     return image
 
@@ -58,5 +58,5 @@ class Command(BaseCommand):
             os.makedirs(settings.MEDIA_ROOT)
         for index, image_url in enumerate(json['imgs'], start=1):
             image = add_image_to_place(place, image_url, settings.MEDIA_ROOT)
-            self.stdout.write(f'{index}. {image.path}')
+            self.stdout.write(f'{index}. {image.image}')
         self.stdout.write(self.style.SUCCESS(f'Images added.'))
