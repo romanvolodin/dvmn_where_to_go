@@ -38,7 +38,7 @@ def index(request):
 
 def place_detail(request, place_id):
     place = get_object_or_404(Place, pk=place_id)
-    images = Image.objects.filter(place=place)
+    images = place.images.all()
     return JsonResponse(
         {
             "title": place.title,
