@@ -21,8 +21,8 @@ def add_place(json):
         title=json['title'],
         longitude=json['coordinates']['lng'],
         latitude=json['coordinates']['lat'],
-        description_short=json['description_short'],
-        description_long=json['description_long'],
+        short_description=json['description_short'],
+        long_description=json['description_long'],
     )
     if created:
         place.place_id = uuid.uuid1()
