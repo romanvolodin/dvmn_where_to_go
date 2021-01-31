@@ -41,7 +41,7 @@ python3 manage.py runserver
 ```env
 DEBUG=True
 SECRET_KEY=1rr!a(+$-8sf(9+sc)a-k2q%cqswc39qto#ba%wjv!or75h0k3
-ALLOWED_HOSTS=['localhost', '127.0.0.1', 'example.com', 'www.example.com']
+ALLOWED_HOSTS=localhost,127.0.0.1,example.com,www.example.com
 ```
 
 ## Как добавить место
