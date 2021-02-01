@@ -24,6 +24,7 @@ def add_image_to_place(place, image_url, upload_to):
     file_name = os.path.basename(image_url)
     file_path = os.path.join(upload_to, file_name)
     r = requests.get(image_url)
+    r.raise_for_status()
     with open(file_path, 'wb') as f:
         f.write(r.content)
     image = Image(place=place, image=file_name)
@@ -45,10 +46,13 @@ class Command(BaseCommand):
 
         place = add_place(json)
         self.stdout.write(self.style.SUCCESS(f'Place created: {place.title}.'))
-        self.stdout.write(f'{len(json["imgs"])} images found.')
+        self.stdout.write(f'Trying to download {len(json["imgs"])} images...')
         if not os.path.exists(settings.MEDIA_ROOT):
             os.makedirs(settings.MEDIA_ROOT)
         for index, image_url in enumerate(json['imgs'], start=1):
-            image = add_image_to_place(place, image_url, settings.MEDIA_ROOT)
-            self.stdout.write(f'{index}. {image.image}')
-        self.stdout.write(self.style.SUCCESS(f'Images added.'))
+            try:
+                image = add_image_to_place(place, image_url, settings.MEDIA_ROOT)
+                self.stdout.write(f'{index}. {image.image}')
+            except requests.HTTPError as err:
+                self.stderr.write(str(err))
+        self.stdout.write('Done.')
