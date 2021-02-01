@@ -1,12 +1,11 @@
 import os
 import uuid
+
 import requests
-from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
-from places.models import (
-    Place,
-    Image,
-)
+from django.core.management.base import BaseCommand, CommandError
+
+from places.models import Image, Place
 
 
 def download_json(json_url):
