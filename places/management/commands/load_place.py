@@ -1,5 +1,4 @@
 import os
-import uuid
 
 import requests
 from django.conf import settings
@@ -18,9 +17,6 @@ def add_place(json):
     place, created = Place.objects.get_or_create(
         title=json['title'],
     )
-    if created:
-        place.place_id = uuid.uuid1()
-        place.save()
     return place
 
 

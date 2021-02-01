@@ -1,10 +1,12 @@
+import uuid
+
 from django.db import models
 from tinymce.models import HTMLField
 
 
 class Place(models.Model):
     title = models.CharField(verbose_name="заголовок", max_length=255)
-    place_id = models.CharField(verbose_name="id места", max_length=255, blank=True)
+    place_id = models.CharField(verbose_name="id места", max_length=255, blank=True, default=uuid.uuid1)
     longitude = models.FloatField(verbose_name="долгота", default=0)
     latitude = models.FloatField(verbose_name="широта", default=0)
     short_description = models.TextField(verbose_name="Короткое описание", blank=True)
