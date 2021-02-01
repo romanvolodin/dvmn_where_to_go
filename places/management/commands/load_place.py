@@ -10,8 +10,7 @@ from places.models import Image, Place
 
 def download_json(json_url):
     response = requests.get(json_url)
-    if response.status_code != 200:
-        return
+    response.raise_for_status()
     return response.json()
 
 
@@ -47,9 +46,11 @@ class Command(BaseCommand):
         parser.add_argument('json_url', type=str)
 
     def handle(self, *args, **options):
-        json = download_json(options["json_url"])
-        if json is None:
-            return self.stderr.write(f'Url does not exits.')
+        try:
+            json = download_json(options["json_url"])
+        except requests.HTTPError as err:
+            return self.stderr.write(str(err))
+
         place = add_place(json)
         self.stdout.write(self.style.SUCCESS(f'Place created: {place.title}.'))
         self.stdout.write(f'{len(json["imgs"])} images found.')
