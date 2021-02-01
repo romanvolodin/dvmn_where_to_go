@@ -17,10 +17,6 @@ def download_json(json_url):
 def add_place(json):
     place, created = Place.objects.get_or_create(
         title=json['title'],
-        longitude=json['coordinates']['lng'],
-        latitude=json['coordinates']['lat'],
-        short_description=json['description_short'],
-        long_description=json['description_long'],
     )
     if created:
         place.place_id = uuid.uuid1()
