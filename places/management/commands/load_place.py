@@ -19,6 +19,10 @@ def add_place(json):
         longitude=json['coordinates']['lng'],
         latitude=json['coordinates']['lat'],
     )
+        if created:
+        place.short_description = json['description_short']
+        place.long_description = json['description_long']
+        place.save()
     return place
 
 
