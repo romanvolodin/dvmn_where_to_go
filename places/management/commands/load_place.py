@@ -12,11 +12,11 @@ def add_place(json):
         title=json['title'],
         longitude=json['coordinates']['lng'],
         latitude=json['coordinates']['lat'],
+        defaults={
+            'short_description': json['description_short'],
+            'long_description': json['description_long'],
+        }
     )
-    if created:
-        place.short_description = json['description_short']
-        place.long_description = json['description_long']
-        place.save()
     return place
 
 
