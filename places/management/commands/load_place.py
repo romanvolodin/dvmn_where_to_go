@@ -49,8 +49,7 @@ class Command(BaseCommand):
         place = add_place(json)
         self.stdout.write(self.style.SUCCESS(f'Place created: {place.title}.'))
         self.stdout.write(f'Trying to download {len(json["imgs"])} images...')
-        if not os.path.exists(settings.MEDIA_ROOT):
-            os.makedirs(settings.MEDIA_ROOT)
+        os.makedirs(settings.MEDIA_ROOT, exist_ok=True)
         for index, image_url in enumerate(json['imgs'], start=1):
             try:
                 image = add_image_to_place(place, image_url, settings.MEDIA_ROOT)
