@@ -16,6 +16,8 @@ def download_json(json_url):
 def add_place(json):
     place, created = Place.objects.get_or_create(
         title=json['title'],
+        longitude=json['coordinates']['lng'],
+        latitude=json['coordinates']['lat'],
     )
     return place
 
