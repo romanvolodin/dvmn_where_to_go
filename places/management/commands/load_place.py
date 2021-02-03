@@ -7,12 +7,6 @@ from django.core.management.base import BaseCommand, CommandError
 from places.models import Image, Place
 
 
-def download_json(json_url):
-    response = requests.get(json_url)
-    response.raise_for_status()
-    return response.json()
-
-
 def add_place(json):
     place, created = Place.objects.get_or_create(
         title=json['title'],
@@ -46,10 +40,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         try:
-            json = download_json(options["json_url"])
+            response = requests.get(options["json_url"])
+            response.raise_for_status()
         except requests.HTTPError as err:
             return self.stderr.write(str(err))
 
+        json = response.json()
         place = add_place(json)
         self.stdout.write(self.style.SUCCESS(f'Place created: {place.title}.'))
         self.stdout.write(f'Trying to download {len(json["imgs"])} images...')
