@@ -9,7 +9,7 @@ def index(request):
 
     places = Place.objects.all()
 
-    places_data = {
+    places_geojson = {
         "type": "FeatureCollection",
         "features": [
             {
@@ -27,7 +27,7 @@ def index(request):
         ]
     }
     
-    context = {"places_data": places_data}
+    context = {"places_geojson": places_geojson}
     return render(request, 'index.html', context=context)
 
 
