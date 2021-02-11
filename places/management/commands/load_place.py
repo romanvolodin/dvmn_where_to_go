@@ -7,19 +7,6 @@ from django.core.management.base import BaseCommand, CommandError
 from places.models import Image, Place
 
 
-def add_place(json):
-    place, created = Place.objects.get_or_create(
-        title=json['title'],
-        longitude=json['coordinates']['lng'],
-        latitude=json['coordinates']['lat'],
-        defaults={
-            'short_description': json['description_short'],
-            'long_description': json['description_long'],
-        }
-    )
-    return place
-
-
 def add_image_to_place(place, image_url, upload_to):
     file_name = os.path.basename(image_url)
     file_path = os.path.join(upload_to, file_name)
@@ -46,7 +33,15 @@ class Command(BaseCommand):
             return self.stderr.write(str(err))
 
         json = response.json()
-        place = add_place(json)
+        place, created = Place.objects.get_or_create(
+            title=json['title'],
+            longitude=json['coordinates']['lng'],
+            latitude=json['coordinates']['lat'],
+            defaults={
+                'short_description': json['description_short'],
+                'long_description': json['description_long'],
+            }
+        )
         self.stdout.write(self.style.SUCCESS(f'Place created: {place.title}.'))
         self.stdout.write(f'Trying to download {len(json["imgs"])} images...')
         os.makedirs(settings.MEDIA_ROOT, exist_ok=True)
