@@ -30,7 +30,7 @@ class Command(BaseCommand):
             response = requests.get(options["json_url"])
             response.raise_for_status()
         except requests.HTTPError as err:
-            return self.stderr.write(str(err))
+            return self.stderr.write('Не можем найти указанный файл. Убедитесь, что введенная ссылка верна.')
 
         json = response.json()
         place, created = Place.objects.get_or_create(
