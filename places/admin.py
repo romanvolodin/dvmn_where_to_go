@@ -13,7 +13,7 @@ class ImageInlineAdmin(SortableInlineAdminMixin, admin.TabularInline):
     def get_preview(self, obj):
         if not obj.image:
             return format_html("Здесь будет превью, когда вы загрузите файл.")
-        return format_html(f"<img src='{obj.image.url}' height='200'>")
+        return format_html("<img src='{}' height='200'>", obj.image.url)
 
     get_preview.short_description = "Превью" 
 
