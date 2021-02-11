@@ -32,20 +32,20 @@ class Command(BaseCommand):
         except requests.HTTPError as err:
             return self.stderr.write('Не можем найти указанный файл. Убедитесь, что введенная ссылка верна.')
 
-        json = response.json()
+        raw_place = response.json()
         place, created = Place.objects.get_or_create(
-            title=json['title'],
-            longitude=json['coordinates']['lng'],
-            latitude=json['coordinates']['lat'],
+            title=raw_place['title'],
+            longitude=raw_place['coordinates']['lng'],
+            latitude=raw_place['coordinates']['lat'],
             defaults={
-                'short_description': json['description_short'],
-                'long_description': json['description_long'],
+                'short_description': raw_place['description_short'],
+                'long_description': raw_place['description_long'],
             }
         )
         self.stdout.write(self.style.SUCCESS(f'Place created: {place.title}.'))
-        self.stdout.write(f'Trying to download {len(json["imgs"])} images...')
+        self.stdout.write(f'Trying to download {len(raw_place["imgs"])} images...')
         os.makedirs(settings.MEDIA_ROOT, exist_ok=True)
-        for index, image_url in enumerate(json['imgs'], start=1):
+        for index, image_url in enumerate(raw_place['imgs'], start=1):
             try:
                 image = add_image_to_place(place, image_url, settings.MEDIA_ROOT)
                 self.stdout.write(f'{index}. {image.image}')
